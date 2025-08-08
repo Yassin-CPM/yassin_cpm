@@ -1,30 +1,29 @@
 {
-  "bronze": {
-    "username": "user_bronze",
-    "email": "www.yahiaseaf@gmail.com",
-    "password": "123456789",
-    "date": "2023-05-15",
-    "cars": 100,
-    "money": 500000,
-    "coins": 30000
-  },
-  "silver": {
-    "username": "user_silver",
-    "email": "silver@example.com",
-    "password": "654321",
-    "date": "2023-06-20",
-    "cars": 10,
-    "money": 1000000,
-    "coins": 3000
-  },
-  "gold": {
-    "username": "user_gold",
-    "email": "gold@example.com",
-    "password": "112233",
-    "date": "2023-07-10",
+  "vip1": {
     "cars": 20,
+    "money": 5000000,
+    "coins": 3000,
+    "username": "VIP_Player",
+    "email": "vip@example.com",
+    "account_password": "Acc12345",
+    "date": "2025-07-01"
+  },
+  "vip2": {
+    "cars": 15,
     "money": 3000000,
-    "coins": 5000
+    "coins": 1500,
+    "username": "ProDriver",
+    "email": "pro@example.com",
+    "account_password": "Drive2025",
+    "date": "2025-06-15"
+  },
+  "vip3": {
+    "cars": 10,
+    "money": 2000000,
+    "coins": 800,
+    "username": "SpeedKing",
+    "email": "speed@example.com",
+    "account_password": "FastCar2025",
+    "date": "2025-05-10"
   }
 }
-
