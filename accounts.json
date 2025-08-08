@@ -1,0 +1,29 @@
+{
+  "bronze": {
+    "username": "user_bronze",
+    "email": "bronze@example.com",
+    "password": "123456",
+    "date": "2023-05-15",
+    "cars": 5,
+    "money": 500000,
+    "coins": 1000
+  },
+  "silver": {
+    "username": "user_silver",
+    "email": "silver@example.com",
+    "password": "654321",
+    "date": "2023-06-20",
+    "cars": 10,
+    "money": 1000000,
+    "coins": 3000
+  },
+  "gold": {
+    "username": "user_gold",
+    "email": "gold@example.com",
+    "password": "112233",
+    "date": "2023-07-10",
+    "cars": 20,
+    "money": 3000000,
+    "coins": 5000
+  }
+}

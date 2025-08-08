@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحسابات الجاهزة</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+        }
+        .account-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(6px);
+        }
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .select-btn {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+            transition: all 0.3s ease;
+        }
+        .select-btn:hover {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+        }
+        .password-input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-white font-sans min-h-screen">
+
+    <header class="py-6 text-center">
+        <h1 class="text-4xl font-extrabold tracking-wide">🚗 الحسابات الجاهزة</h1>
+        <p class="text-gray-300 mt-2">اختر الحساب المناسب لك وأدخل كلمة السر لعرض التفاصيل</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="accounts-container">
+            <!-- الحسابات من الجافاسكربت -->
+        </div>
+    </main>
+
+    <!-- مودال إدخال الباسورد -->
+    <div id="password-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 hidden z-50">
+        <div class="bg-gray-900 p-6 rounded-xl shadow-lg w-80">
+            <h2 class="text-xl font-bold mb-4 text-center">🔑 أدخل كلمة السر</h2>
+            <input type="password" id="modal-password" class="password-input mb-4" placeholder="كلمة السر">
+            <div class="flex justify-between">
+                <button onclick="closeModal()" class="bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded">إلغاء</button>
+                <button onclick="submitPassword()" class="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded">دخول</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let accountsData = {};
+        let passwordsData = {};
+        let currentAccount = null;
+
+        // تحميل البيانات من الملفين
+        Promise.all([
+            fetch('accounts.json').then(res => res.json()),
+            fetch('passwords.json').then(res => res.json())
+        ]).then(([accounts, passwords]) => {
+            accountsData = accounts;
+            passwordsData = passwords;
+            renderAccounts();
+        });
+
+        // عرض الحسابات
+        function renderAccounts() {
+            const container = document.getElementById('accounts-container');
+            container.innerHTML = '';
+            for (let type in accountsData) {
+                const acc = accountsData[type];
+                container.innerHTML += `
+                    <div class="account-card rounded-lg p-6">
+                        <h3 class="text-2xl font-bold text-center mb-4">💳 حساب ${type}</h3>
+                        <ul class="space-y-2 mb-6 text-gray-200">
+                            <li>🚘 ${acc.cars} سيارات</li>
+                            <li>💵 ${acc.money.toLocaleString()} فلوس</li>
+                            <li>💰 ${acc.coins.toLocaleString()} كوينز</li>
+                        </ul>
+                        <button class="select-btn text-white w-full py-2 rounded-lg font-bold" onclick="openModal('${type}')">
+                            عرض التفاصيل
+                        </button>
+                        <div id="${type}-details" class="hidden mt-4 border-t border-gray-600 pt-3 text-sm">
+                            <h4 class="font-bold mb-2">📋 تفاصيل الحساب:</h4>
+                            <ul class="space-y-2 text-gray-300">
+                                <li>👤 اسم المستخدم: ${acc.username}</li>
+                                <li>📧 البريد الإلكتروني: ${acc.email}</li>
+                                <li>🔑 كلمة السر: <span id="${type}-actual-pass" class="text-pink-400"></span></li>
+                                <li>📅 تاريخ الإنشاء: ${acc.date}</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function openModal(type) {
+            currentAccount = type;
+            document.getElementById('modal-password').value = '';
+            document.getElementById('password-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('password-modal').classList.add('hidden');
+        }
+
+        function submitPassword() {
+            const entered = document.getElementById('modal-password').value;
+            const correct = passwordsData[currentAccount];
+            if (entered === correct) {
+                document.getElementById(`${currentAccount}-actual-pass`).textContent = correct;
+                document.getElementById(`${currentAccount}-details`).classList.remove('hidden');
+                closeModal();
+            } else {
+                alert('❌ كلمة السر غير صحيحة!');
+            }
+        }
+    </script>
+
+</body>
+</html>
