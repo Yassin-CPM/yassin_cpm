@@ -1,11 +1,11 @@
 {
   "vip1": {
-    "cars": 20,
+    "cars": 100,
     "money": 5000000,
-    "coins": 3000,
-    "username": "VIP_Player",
-    "email": "vip@example.com",
-    "account_password": "Acc12345",
+    "coins": 30000,
+    "username": "غشيم",
+    "email": "www.yahiasef@gmail.com",
+    "account_password": "123456789",
     "date": "2025-07-01"
   },
   "vip2": {
@@ -27,3 +27,4 @@
     "date": "2025-05-10"
   }
 }
+
