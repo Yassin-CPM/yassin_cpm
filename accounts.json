@@ -1,12 +1,12 @@
 {
   "bronze": {
     "username": "user_bronze",
-    "email": "bronze@example.com",
-    "password": "123456",
+    "email": "www.yahiaseaf@gmail.com",
+    "password": "123456789",
     "date": "2023-05-15",
-    "cars": 5,
+    "cars": 100,
     "money": 500000,
-    "coins": 1000
+    "coins": 30000
   },
   "silver": {
     "username": "user_silver",
@@ -27,3 +27,4 @@
     "coins": 5000
   }
 }
+
