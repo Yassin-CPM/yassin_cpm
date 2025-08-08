@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ملخص طلبك - Car Parking Multiplayer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: radial-gradient(circle at 60% 40%, #1b263b 0%, #0d1b2a 80%, #ff2e63 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Tajawal', Arial, sans-serif;
+      color: #fff;
+    }
+    .canvas-wrap {
+      background: rgba(20,30,50,0.92);
+      border-radius: 24px;
+      box-shadow: 0 0 40px #ff2e63, 0 0 60px #08d9d6;
+      padding: 32px 24px 24px 24px;
+      margin-bottom: 30px;
+    }
+    .neon-btn {
+      background: #ff2e63;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: bold;
+      padding: 14px 40px;
+      border-radius: 30px;
+      box-shadow: 0 0 30px #ff2e63, 0 0 60px #08d9d6;
+      border: none;
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.2s;
+      margin-top: 18px;
+    }
+    .neon-btn:hover {
+      box-shadow: 0 0 60px #ff2e63, 0 0 120px #08d9d6;
+      transform: scale(1.07);
+    }
+  </style>
+</head>
+<body>
+  <div class="canvas-wrap">
+    <canvas id="orderCanvas" width="700" height="500"></canvas>
+  </div>
+  <button class="neon-btn" onclick="downloadImage()">تحميل صورة طلبك</button>
+
+  <script>
+    function getLastOrder() {
+      const requests = JSON.parse(localStorage.getItem('cpm_requests') || '[]');
+      return requests.length ? requests[requests.length - 1] : null;
+    }
+
+    function drawOrder(order) {
+      const canvas = document.getElementById("orderCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // خلفية متدرجة
+      const grad = ctx.createLinearGradient(0, 0, 700, 500);
+      grad.addColorStop(0, "#1b263b");
+      grad.addColorStop(1, "#ff2e63");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 700, 500);
+
+      // إطار مضيء
+      ctx.strokeStyle = "#ffe600";
+      ctx.lineWidth = 5;
+      ctx.shadowColor = "#ff2e63";
+      ctx.shadowBlur = 15;
+      ctx.strokeRect(10, 10, 680, 480);
+      ctx.shadowBlur = 0;
+
+      // عنوان
+      ctx.font = "bold 28px Tajawal, Arial";
+      ctx.fillStyle = "#fff";
+      ctx.textAlign = "center";
+      ctx.fillText("ملخص طلبك في Car Parking Multiplayer", 350, 50);
+
+      // تفاصيل الطلب
+      ctx.font = "20px Tajawal, Arial";
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#fff";
+
+      const lines = [
+        `الاسم: ${order.name || "-"}`,
+        `البريد: ${order.email || "-"}`,
+        `رقم الهاتف: ${order.phone || "-"}`,
+        `عدد السيارات: ${order.cars || "-"}`,
+        `الفلوس: ${order.money || "-"}`,
+        `الكوينز: ${order.coins || "-"}`,
+        `stiker&clothes: ${order.openPass || "-"}`,
+        `توثيق الحساب: ${order.verified ? "نعم" : "لا"}`,
+        `تاريخ الطلب: ${order.createdAt ? new Date(order.createdAt).toLocaleDateString('ar-EG') : "-"}`
+      ];
+
+      lines.forEach((line, i) => {
+        ctx.fillText(line, 660, 90 + i * 35);
+      });
+
+      // تحميل الصور
+      const logoImg = new Image();
+      logoImg.src = "logo1.png";
+
+      const carImg = new Image();
+      carImg.src = "car.png";
+
+      logoImg.onload = () => {
+        // جعل اللوجو أكبر (150 عرض) ووضعه في الأسفل في المساحة الفارغة
+        ctx.drawImage(logoImg, -60, 5, 520, 520); 
+        
+        carImg.onload = () => {
+          ctx.globalAlpha = 0.8;
+          // جعل صورة السيارة أصغر (200 عرض بدلاً من الحجم الأصلي)
+          ctx.drawImage(carImg, 30, 350, 400, 120); 
+          ctx.globalAlpha = 1;
+        };
+      };
+    }
+
+    function downloadImage() {
+      const canvas = document.getElementById("orderCanvas");
+      const link = document.createElement("a");
+      link.download = "طلبك.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    const order = getLastOrder();
+    if (order) {
+      drawOrder(order);
+    } else {
+      document.querySelector(".canvas-wrap").innerHTML = "<p style='color:#fff;text-align:center;font-size:1.5rem'>لا يوجد طلب لعرضه</p>";
+      document.querySelector(".neon-btn").style.display = "none";
+    }
+  </script>
+</body>
+</html>

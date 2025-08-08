@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تخصيص الحساب - Car Parking Multiplayer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+    }
+  </style>
+</head>
+<body class="gradient-bg text-white font-sans">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto bg-gray-800 bg-opacity-50 rounded-lg p-8">
+      <h2 class="text-2xl font-bold mb-6 text-center">مواصفات الحساب</h2>
+
+      <form id="accountSpecsForm" class="space-y-6">
+        <div>
+          <label for="open-pass" class="block mb-2">stiker&clothes مفتوح</label>
+          <select id="open-pass" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+            <option value="">-- اختر --</option>
+            <option value="نعم">نعم</option>
+            <option value="لا">لا</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="cars" class="block mb-2">عدد السيارات</label>
+          <input type="number" id="cars" min="0" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+
+        <div>
+          <label for="money" class="block mb-2">الفلوس</label>
+          <input type="number" id="money" min="0" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+
+        <div>
+          <label for="coins" class="block mb-2">الكوينز</label>
+          <input type="number" id="coins" min="0" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+
+        <div>
+          <label class="flex items-center">
+            <input type="checkbox" id="verified" class="mr-2">
+            <span>توثيق الحساب (بتكلفة إضافية 10 جنيه)</span>
+          </label>
+        </div>
+
+        <button type="submit" class="bg-pink-600 text-white py-3 px-4 rounded-lg font-bold w-full hover:bg-pink-700">
+          التالي: معلومات الشخص
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('accountSpecsForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const specs = {
+        openPass: document.getElementById('open-pass').value,
+        cars: document.getElementById('cars').value,
+        money: document.getElementById('money').value,
+        coins: document.getElementById('coins').value,
+        verified: document.getElementById('verified').checked
+      };
+
+      sessionStorage.setItem('accountSpecs', JSON.stringify(specs));
+      window.location.href = 'user-info.html';
+    });
+  </script>
+</body>
+</html>

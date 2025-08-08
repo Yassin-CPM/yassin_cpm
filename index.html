@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Parking Multiplayer - منصة الأحلام</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 60% 40%, #1b263b 0%, #0d1b2a 80%, #ff2e63 100%);
+            overflow-x: hidden;
+            user-select: none; /* تعطيل تحديد النص */
+        }
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .logo-animate {
+            animation: logoPulse 2.5s infinite alternate;
+            box-shadow: 0 0 40px #ff2e63, 0 0 60px #08d9d6;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+        }
+        @keyframes logoPulse {
+            0% { transform: scale(1);}
+            100% { transform: scale(1.08);}
+        }
+        .car-3d {
+            position: absolute;
+            bottom: 110px;
+            left: 10vw;
+            z-index: 10;
+            height: 120px;
+            animation: carDrive 8s linear infinite;
+        }
+        @keyframes carDrive {
+            0% { left: 10vw; }
+            50% { left: 70vw; }
+            100% { left: 10vw; }
+        }
+        .smoke {
+            position: absolute;
+            bottom: 120px;
+            left: 13vw;
+            width: 80px;
+            height: 40px;
+            pointer-events: none;
+            z-index: 9;
+        }
+        .smoke span {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, #fff 60%, transparent 100%);
+            opacity: 0.22;
+            border-radius: 50%;
+            animation: smokeMove 3.5s infinite;
+        }
+        .smoke span:nth-child(2) { left: 30%; animation-delay: 0.7s;}
+        .smoke span:nth-child(3) { left: 70%; animation-delay: 1.2s;}
+        @keyframes smokeMove {
+            0% { transform: scale(0.8) translateY(0); opacity: 0.22;}
+            50% { transform: scale(1.2) translateY(-15px); opacity: 0.11;}
+            100% { transform: scale(1.5) translateY(-30px); opacity: 0;}
+        }
+        .road {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90vw;
+            height: 110px;
+            background: linear-gradient(180deg, #222 80%, #fff 100%);
+            border-radius: 0 0 80px 80px;
+            box-shadow: 0 0 60px #ff2e63, 0 0 80px #08d9d6;
+            z-index: 2;
+        }
+        .road-lines {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+        .road-lines span {
+            display: block;
+            width: 60px;
+            height: 8px;
+            background: #ffe600;
+            border-radius: 4px;
+            opacity: 0.7;
+            box-shadow: 0 0 20px #ffe600;
+            animation: lineMove 2s linear infinite;
+        }
+        @keyframes lineMove {
+            0% { opacity: 0.7; }
+            50% { opacity: 0.2; }
+            100% { opacity: 0.7; }
+        }
+        .welcome-card {
+            background: rgba(20, 30, 50, 0.90);
+            border-radius: 30px;
+            box-shadow: 0 0 40px #ff2e63, 0 0 80px #08d9d6;
+            padding: 40px 30px;
+            margin-top: 60px;
+            z-index: 10;
+            position: relative;
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.95);}
+            100% { opacity: 1; transform: scale(1);}
+        }
+        .welcome-card h1 {
+            font-size: 3.2rem;
+            margin-bottom: 18px;
+            text-shadow: 0 0 30px #ff2e63, 0 0 60px #ff2e63;
+            animation: titlePulse 2s infinite alternate;
+            letter-spacing: 7px;
+        }
+        @keyframes titlePulse {
+            0% { text-shadow: 0 0 30px #ff2e63, 0 0 60px #ff2e63;}
+            100% { text-shadow: 0 0 60px #ff2e63, 0 0 120px #ff2e63;}
+        }
+        .welcome-card .username {
+            font-size: 1.7rem;
+            color: #ffe600;
+            font-weight: bold;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #ffe600, 0 0 20px #ff2e63;
+        }
+        .welcome-card p {
+            font-size: 1.3rem;
+            margin-bottom: 22px;
+            color: #e0e0e0;
+        }
+        .neon-btn {
+            box-shadow: 0 0 30px #ff2e63, 0 0 60px #ff2e63;
+            transition: box-shadow 0.3s, transform 0.3s;
+            animation: btnBounce 2s infinite alternate;
+        }
+        .neon-btn:hover {
+            box-shadow: 0 0 80px #ff2e63, 0 0 160px #ff2e63;
+            transform: scale(1.08);
+        }
+        @keyframes btnBounce {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(-10px);}
+        }
+        .arabic-icons {
+            position: absolute;
+            bottom: 8%; left: 6%;
+            font-size: 3rem;
+            opacity: 0.15;
+            z-index: 1;
+            animation: iconsMove 8s infinite alternate-reverse;
+        }
+        @keyframes iconsMove {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(35px);}
+        }
+        img {
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+    </style>
+    <script>
+        // تعطيل النسخ بالماوس والكيبورد
+        document.addEventListener('copy', function(e) { e.preventDefault(); });
+        document.addEventListener('cut', function(e) { e.preventDefault(); });
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        // تعطيل سحب الصور
+        document.querySelectorAll('img').forEach(function(img) {
+            img.addEventListener('dragstart', function(e) { e.preventDefault(); });
+        });
+    </script>
+</head>
+<body class="text-white font-sans">
+    <div class="arabic-icons">🚗✨🔥🏆</div>
+    <div class="road"></div>
+    <div class="road-lines">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <header class="relative h-screen overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="welcome-card relative z-10 flex flex-col justify-center items-center text-center">
+            <!-- اللوجو -->
+            <img src="logo.png" alt="Logo" class="logo-animate mb-4" style="width:110px; height:110px;">
+            <div class="username">Yassin</div>
+            <h1 class="font-bold mb-4 title-glow">Car Parking Multiplayer</h1>
+            <p class="mb-8">انطلق الآن في عالم السيارات! احصل على حسابك المميز وخصصه كما تحب.<br>اختر سيارتك، أضف مواصفاتك، وكن من نخبة اللاعبين في CPM.</p>
+            <a href="main.html" class="neon-btn bg-pink-600 text-white py-4 px-12 rounded-full text-2xl font-bold hover:bg-pink-700 transition duration-300">ابدأ الآن 🚗</a>
+        </div>
+        <img src="car.png" alt="Car" class="car-3d">
+        <div class="smoke">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+</body>
+</html>

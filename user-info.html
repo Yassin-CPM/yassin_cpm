@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معلومات الشخص - Car Parking Multiplayer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+    }
+    .neon-btn {
+      box-shadow: 0 0 10px #ff2e63, 0 0 20px #ff2e63;
+      transition: all 0.3s ease;
+    }
+    .neon-btn:hover {
+      box-shadow: 0 0 15px #ff2e63, 0 0 30px #ff2e63;
+    }
+  </style>
+</head>
+<body class="gradient-bg text-white font-sans">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto bg-gray-800 bg-opacity-50 rounded-lg p-8">
+      <h2 class="text-2xl font-bold mb-6 text-center">معلومات الشخص</h2>
+
+      <form id="userInfoForm" class="space-y-6">
+        <div>
+          <label for="name" class="block mb-2">الاسم الكامل</label>
+          <input type="text" id="name" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+        <div>
+          <label for="email" class="block mb-2">البريد الإلكتروني</label>
+          <input type="email" id="email" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+        <div>
+          <label for="phone" class="block mb-2">رقم الهاتف</label>
+          <input type="tel" id="phone" required class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+        <div>
+          <label for="telegram" class="block mb-2">حساب Telegram (اختياري)</label>
+          <input type="text" id="telegram" class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+        <div>
+          <label for="tiktok" class="block mb-2">حساب TikTok (اختياري)</label>
+          <input type="text" id="tiktok" class="w-full px-4 py-3 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-600">
+        </div>
+        <button type="submit" class="neon-btn bg-pink-600 w-full py-3 px-4 rounded-lg font-bold">إرسال الطلب</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('userInfoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // جلب مواصفات الحساب من sessionStorage
+      const accountSpecs = JSON.parse(sessionStorage.getItem('accountSpecs') || '{}');
+
+      // جمع بيانات المستخدم
+      const requestData = {
+        requestId: 'req_' + Math.random().toString(36).substr(2, 9),
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        telegram: document.getElementById('telegram').value || 'غير محدد',
+        tiktok: document.getElementById('tiktok').value || 'غير محدد',
+        ...accountSpecs,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        const telegramResult = await sendToTelegram(requestData);
+
+        if (telegramResult.ok) {
+          saveToLocalStorage(requestData);
+          alert(`تم إرسال طلبك بنجاح! رقم الطلب: ${requestData.requestId}`);
+          window.location.href = 'my-requests.html';
+        } else {
+          throw new Error('فشل في إرسال الطلب إلى Telegram');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء إرسال الطلب: ' + error.message);
+      }
+    });
+
+    async function sendToTelegram(formData) {
+      const botToken = '7729411481:AAF_8_wQ3BUd1RMu8IKieg3aPhJjfYtXyDc';
+      const chatId = '5228069632';
+
+      const message = `
+طلب جديد:
+رقم الطلب: ${formData.requestId}
+التاريخ: ${new Date(formData.createdAt).toLocaleString('ar-EG')}
+الاسم: ${formData.name}
+البريد الإلكتروني: ${formData.email}
+رقم الهاتف: ${formData.phone}
+Telegram: ${formData.telegram}
+TikTok: ${formData.tiktok}
+stiker&clothes مفتوح: ${formData.openPass}
+عدد السيارات: ${formData.cars}
+الفلوس: ${formData.money}
+الكوينز: ${formData.coins}
+توثيق الحساب: ${formData.verified ? 'نعم (+10 جنيه)' : 'لا'}
+      `;
+
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: chatId, text: message })
+      });
+
+      return await response.json();
+    }
+
+    function saveToLocalStorage(formData) {
+      let requests = JSON.parse(localStorage.getItem('cpm_requests') || '[]');
+      requests.push(formData);
+      localStorage.setItem('cpm_requests', JSON.stringify(requests));
+    }
+  </script>
+</body>
+</html>

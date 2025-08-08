@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية - Car Parking Multiplayer</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 60% 40%, #1b263b 0%, #0d1b2a 80%, #ff2e63 100%);
+            overflow-x: hidden;
+        }
+        .glow-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .glow-bg span {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: 0.18;
+            animation: glowMove 10s infinite alternate;
+        }
+        .glow-bg span:nth-child(1) {
+            width: 300px; height: 300px; background: #ff2e63; top: 10%; left: 8%;
+        }
+        .glow-bg span:nth-child(2) {
+            width: 180px; height: 180px; background: #08d9d6; top: 70%; left: 70%;
+            animation-delay: 2s;
+        }
+        .glow-bg span:nth-child(3) {
+            width: 120px; height: 120px; background: #ffe600; top: 50%; left: 50%;
+            animation-delay: 4s;
+        }
+        @keyframes glowMove {
+            0% { transform: scale(1);}
+            100% { transform: scale(1.2);}
+        }
+        .neon-btn {
+            box-shadow: 0 0 20px #ff2e63, 0 0 40px #ff2e63;
+            transition: box-shadow 0.3s, transform 0.3s;
+            animation: btnBounce 2s infinite alternate;
+        }
+        .neon-btn:hover {
+            box-shadow: 0 0 60px #ff2e63, 0 0 120px #ff2e63;
+            transform: scale(1.08);
+        }
+        @keyframes btnBounce {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(-8px);}
+        }
+        .main-title {
+            text-shadow: 0 0 30px #ff2e63, 0 0 60px #ff2e63;
+            animation: titlePulse 2s infinite alternate;
+            letter-spacing: 7px;
+        }
+        @keyframes titlePulse {
+            0% { text-shadow: 0 0 30px #ff2e63, 0 0 60px #ff2e63;}
+            100% { text-shadow: 0 0 60px #ff2e63, 0 0 120px #ff2e63;}
+        }
+        .nav-btn {
+            background: #08d9d6;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px 28px;
+            border-radius: 30px;
+            box-shadow: 0 0 20px #08d9d6, 0 0 40px #ff2e63;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .nav-btn:hover {
+            background: #ff2e63;
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body class="font-sans text-white">
+    <div class="glow-bg">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <header class="py-8 px-4 relative z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold main-title">Car Parking Multiplayer</h1>
+            <nav>
+                <a href="my-requests.html" class="nav-btn ml-6">طلباتي</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 relative z-10">
+        <section class="py-20 px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 main-title">اختر نوع الحساب</h2>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <a href="customize.html" class="neon-btn bg-pink-600 rounded-lg p-8 text-center hover:bg-pink-700">
+                    <h3 class="text-xl font-bold mb-4">حساب مخصص</h3>
+                    <p>اختر مواصفات حسابك بنفسك</p>
+                </a>
+                <a href="premade.html" class="neon-btn bg-purple-600 rounded-lg p-8 text-center hover:bg-purple-700">
+                    <h3 class="text-xl font-bold mb-4">حساب جاهز</h3>
+                    <p>اختر من بين الحسابات الجاهزة</p>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
