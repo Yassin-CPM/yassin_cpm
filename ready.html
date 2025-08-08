@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الحسابات الجاهزة</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -42,12 +41,12 @@
 
     <header class="py-6 text-center">
         <h1 class="text-4xl font-extrabold tracking-wide">🚗 الحسابات الجاهزة</h1>
-        <p class="text-gray-300 mt-2">اختر الحساب المناسب لك وأدخل كلمة السر لعرض التفاصيل</p>
+        <p class="text-gray-300 mt-2">اختر الحساب المناسب وأدخل كلمة السر لعرض تفاصيله</p>
     </header>
 
     <main class="container mx-auto px-4 py-8">
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="accounts-container">
-            <!-- الحسابات من الجافاسكربت -->
+            <!-- الحسابات -->
         </div>
     </main>
 
@@ -68,7 +67,7 @@
         let passwordsData = {};
         let currentAccount = null;
 
-        // تحميل البيانات من الملفين
+        // تحميل البيانات
         Promise.all([
             fetch('accounts.json').then(res => res.json()),
             fetch('passwords.json').then(res => res.json())
@@ -100,7 +99,7 @@
                             <ul class="space-y-2 text-gray-300">
                                 <li>👤 اسم المستخدم: ${acc.username}</li>
                                 <li>📧 البريد الإلكتروني: ${acc.email}</li>
-                                <li>🔑 كلمة السر: <span id="${type}-password" class="text-pink-400"></span></li>
+                                <li>🔑 كلمة السر: <span id="${type}-actual-pass" class="text-pink-400"></span></li>
                                 <li>📅 تاريخ الإنشاء: ${acc.date}</li>
                             </ul>
                         </div>
@@ -123,7 +122,8 @@
             const entered = document.getElementById('modal-password').value;
             const correct = passwordsData[currentAccount];
             if (entered === correct) {
-                document.getElementById(`${currentAccount}-actual-pass`).textContent = correct;
+                const accountPass = accountsData[currentAccount].account_password;
+                document.getElementById(`${currentAccount}-actual-pass`).textContent = accountPass;
                 document.getElementById(`${currentAccount}-details`).classList.remove('hidden');
                 closeModal();
             } else {
@@ -134,4 +134,3 @@
 
 </body>
 </html>
-
