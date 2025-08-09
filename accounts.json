@@ -9,23 +9,24 @@
     "date": "2025-07-01"
   },
   "vip2": {
-    "cars": 15,
-    "money": 3000000,
-    "coins": 1500,
-    "username": "ProDriver",
-    "email": "pro@example.com",
-    "account_password": "Drive2025",
-    "date": "2025-06-15"
+    "cars": 30,
+    "money": 500000,
+    "coins": 100,
+    "username": "cpm",
+    "email": "demo@yassin.cpm",
+    "account_password": "123456789",
+    "date": "2025-08-9"
   },
   "vip3": {
-    "cars": 10,
-    "money": 2000000,
-    "coins": 800,
+    "cars": 0,
+    "money": 0,
+    "coins": 0,
     "username": "SpeedKing",
     "email": "speed@example.com",
     "account_password": "FastCar2025",
     "date": "2025-05-10"
   }
 }
+
 
 
