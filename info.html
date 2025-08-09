@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>كيفية استخدام الموقع - Info</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-fadeSlide {
+            animation: fadeSlide 0.8s ease forwards;
+        }
+    </style>
+</head>
+<!-- إضافة شاشة "تحت العمل" -->
+<div class="fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-50">
+    <div class="text-center animate-pulse">
+        <div class="bg-yellow-500 text-black px-8 py-4 rounded-2xl shadow-2xl">
+            <h1 class="text-4xl md:text-5xl font-bold">🚧 تحت العمل</h1>
+            <p class="mt-2 text-lg">Under Construction</p>
+        </div>
+    </div>
+</div>
+<body class="bg-gray-900 text-white font-sans">
+
+    <!-- البار الجانبي -->
+    <div class="flex">
+        <aside class="w-60 bg-gray-800 min-h-screen p-4 hidden md:block">
+            <h1 class="text-xl font-bold mb-6">🚗 Yassin CPM</h1>
+            <nav class="space-y-4">
+                <a href="index.html" class="block hover:text-yellow-400">🏠 الرئيسية</a>
+                <a href="orders.html" class="block hover:text-yellow-400">📋 الطلبات</a>
+                <a href="info.html" class="block text-yellow-400 font-bold">ℹ️ المعلومات</a>
+                <a href="contact.html" class="block hover:text-yellow-400">📞 التواصل</a>
+            </nav>
+        </aside>
+
+        <!-- المحتوى -->
+        <main class="flex-1 p-6 space-y-10">
+
+            <!-- العنوان -->
+            <section class="animate-fadeSlide">
+                <h2 class="text-3xl font-bold mb-2">💡 كيفية استخدام الموقع <span class="text-yellow-400">How to Use</span></h2>
+                <p class="text-gray-300">هنا هتتعلم خطوة بخطوة إزاي تستخدم الموقع وتطلب حسابك المخصص في Car Parking Multiplayer.</p>
+            </section>
+
+            <!-- الخطوات -->
+            <section class="space-y-6 animate-fadeSlide">
+                <h3 class="text-2xl font-semibold mb-4">📌 الخطوات Step by Step</h3>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src="images/annotated_img1.png" alt="شرح الخطوة الأولى" class="rounded-lg mb-3">
+                    <p>➤ املأ البيانات المطلوبة في صفحة الطلب.</p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src="images/annotated_img2.png" alt="شرح الخطوة الثانية" class="rounded-lg mb-3">
+                    <p>➤ بعد إرسال الطلب، حمّل صورة الطلب وابعثها لي على أحد حساباتي للتواصل.</p>
+                </div>
+            </section>
+
+            <!-- عني -->
+            <section class="animate-fadeSlide">
+                <h3 class="text-2xl font-semibold mb-4">🙋‍♂️ عنّي <span class="text-yellow-400">About Me</span></h3>
+                <p class="text-gray-300 mb-3">
+                    أنا <strong>Yassin</strong>، عمري 17 سنة، بحب الهاك وأشارك محتوى عن Car Parking Multiplayer على يوتيوب وتيك توك.
+                </p>
+                <div class="flex space-x-4 rtl:space-x-reverse">
+                    <a href="https://t.me/Yassin_CPM" target="_blank" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-600 transition">📩 Telegram</a>
+                    <a href="#" class="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-600 transition">▶️ YouTube</a>
+                    <a href="#" class="bg-pink-500 px-4 py-2 rounded-lg hover:bg-pink-600 transition">🎵 TikTok</a>
+                </div>
+            </section>
+
+            <!-- ملاحظات -->
+            <section class="bg-yellow-500 text-black p-4 rounded-lg shadow-lg animate-fadeSlide">
+                ⚠️ ملاحظة: بعد ما تبعت الطلب، لازم تحمل صورة الطلب وترسلها على أحد حساباتي علشان أقدر أرد عليك.
+            </section>
+        </main>
+    </div>
+</body>
+</html>
