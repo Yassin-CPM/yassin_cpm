@@ -12,43 +12,154 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       font-family: 'Tajawal', Arial, sans-serif;
       color: #fff;
+      overflow-x: hidden;
     }
     .canvas-wrap {
       background: rgba(20,30,50,0.92);
-      border-radius: 24px;
-      box-shadow: 0 0 40px #ff2e63, 0 0 60px #08d9d6;
-      padding: 32px 24px 24px 24px;
-      margin-bottom: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #ff2e63, 0 0 40px #08d9d6;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 900px;
+    }
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      display: block;
     }
     .neon-btn {
       background: #ff2e63;
       color: #fff;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: bold;
-      padding: 14px 40px;
+      padding: 10px 30px;
       border-radius: 30px;
-      box-shadow: 0 0 30px #ff2e63, 0 0 60px #08d9d6;
+      box-shadow: 0 0 20px #ff2e63, 0 0 40px #08d9d6;
       border: none;
       cursor: pointer;
       transition: box-shadow 0.3s, transform 0.2s;
-      margin-top: 18px;
+      margin: 20px 0;
     }
     .neon-btn:hover {
-      box-shadow: 0 0 60px #ff2e63, 0 0 120px #08d9d6;
-      transform: scale(1.07);
+      box-shadow: 0 0 40px #ff2e63, 0 0 80px #08d9d6;
+      transform: scale(1.05);
+    }
+    /* البار الجانبي */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: rgba(20,30,50,0.95);
+      box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+      padding: 20px;
+      transition: 0.3s;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .sidebar.active {
+      right: 0;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 0;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      width: 100%;
+    }
+    .sidebar a:hover {
+      color: #ff2e63;
+    }
+    /* حاوية للوجو وزر الإغلاق */
+    .sidebar-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .sidebar-logo {
+      max-height: 50px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* تعديلات خاصة بالهاتف */
+    @media (max-width: 768px) {
+      body {
+        justify-content: flex-start;
+        padding-top: 20px;
+      }
+      .canvas-wrap {
+        margin-top: 80px;
+        width: 95%;
+      }
+      
+      #orderCanvas {
+        height: 400px !important;
+        object-fit: contain;
+      }
+      
+      .neon-btn {
+        margin-top: 20px;
+        margin-bottom: 30px;
+        width: 90%;
+        max-width: 300px;
+        font-size: 1rem;
+        padding: 8px 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="canvas-wrap">
-    <canvas id="orderCanvas" width="700" height="500"></canvas>
+  <!-- زر لفتح البار -->
+  <img src="logo.png" alt="Logo" class="sidebar-logo" style="position: fixed; top: 10px; right: 10px; max-height: 80px; cursor: pointer;" onclick="toggleSidebar()"/>
+
+  <!-- البار الجانبي -->
+  <div id="sidebar" class="sidebar" role="navigation" aria-label="شريط التنقل الجانبي">
+    <div class="sidebar-header">
+      <button class="close-btn" aria-label="إغلاق القائمة" onclick="toggleSidebar()">×</button>
+      <img src="logo.png" alt="Logo" class="sidebar-logo" />
+    </div>
+    <a href="main.html">الصفحة الرئيسية</a>
+    <a href="ready.html">حسابات الجاهزة</a>
+    <a href="custom.html">حسابات المخصصة</a>
+    <a href="info.html">معلومات</a>
   </div>
+
+  <div class="canvas-wrap">
+    <canvas id="orderCanvas" width="900" height="700"></canvas>
+  </div>
+  <!-- الرسالة التنبيهية -->
+<div id="alert-message" class="bg-yellow-500 bg-opacity-80 text-black font-bold text-center py-3 px-4 rounded-md shadow-lg mt-4 max-w-lg mx-auto">
+  📸 رجاءً قم بتحميل صورة طلبك وإرسالها لنا عبر وسائل التواصل الاجتماعي، وسنقوم بالرد عليك في أقرب وقت.
+</div>
+
   <button class="neon-btn" onclick="downloadImage()">تحميل صورة طلبك</button>
 
   <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
     function getLastOrder() {
       const requests = JSON.parse(localStorage.getItem('cpm_requests') || '[]');
       return requests.length ? requests[requests.length - 1] : null;
@@ -57,30 +168,37 @@
     function drawOrder(order) {
       const canvas = document.getElementById("orderCanvas");
       const ctx = canvas.getContext("2d");
+      const isMobile = window.innerWidth <= 768;
+
+      // ضبط أبعاد الكانفاس للهاتف
+      if (isMobile) {
+        canvas.width = window.innerWidth * 0.95;
+        canvas.height = 400;
+      }
 
       // خلفية متدرجة
-      const grad = ctx.createLinearGradient(0, 0, 700, 500);
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       grad.addColorStop(0, "#1b263b");
       grad.addColorStop(1, "#ff2e63");
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 700, 500);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // إطار مضيء
       ctx.strokeStyle = "#ffe600";
       ctx.lineWidth = 5;
       ctx.shadowColor = "#ff2e63";
       ctx.shadowBlur = 15;
-      ctx.strokeRect(10, 10, 680, 480);
+      ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
       ctx.shadowBlur = 0;
 
       // عنوان
-      ctx.font = "bold 28px Tajawal, Arial";
+      ctx.font = isMobile ? "bold 18px Tajawal, Arial" : "bold 28px Tajawal, Arial";
       ctx.fillStyle = "#fff";
       ctx.textAlign = "center";
-      ctx.fillText("ملخص طلبك في Car Parking Multiplayer", 350, 50);
+      ctx.fillText("ملخص طلبك في Car Parking Multiplayer", canvas.width / 2, isMobile ? 35 : 50);
 
       // تفاصيل الطلب
-      ctx.font = "20px Tajawal, Arial";
+      ctx.font = isMobile ? "14px Tajawal, Arial" : "20px Tajawal, Arial";
       ctx.textAlign = "right";
       ctx.fillStyle = "#fff";
 
@@ -93,30 +211,29 @@
         `الكوينز: ${order.coins || "-"}`,
         `stiker&clothes: ${order.openPass || "-"}`,
         `توثيق الحساب: ${order.verified ? "نعم" : "لا"}`,
+        `الملاحظات: ${order.notes || "-"}`,
         `تاريخ الطلب: ${order.createdAt ? new Date(order.createdAt).toLocaleDateString('ar-EG') : "-"}`
       ];
 
+      // ضبط المسافات بين الأسطر للهاتف
+      const lineHeight = isMobile ? 28 : 40;
+      const startY = isMobile ? 70 : 100;
+      
       lines.forEach((line, i) => {
-        ctx.fillText(line, 660, 90 + i * 35);
+        ctx.fillText(line, canvas.width - (isMobile ? 15 : 40), startY + i * lineHeight);
       });
 
-      // تحميل الصور
+      // تحميل اللوجو مع ضبط الأبعاد للموبايل
       const logoImg = new Image();
       logoImg.src = "logo1.png";
 
-      const carImg = new Image();
-      carImg.src = "car.png";
-
       logoImg.onload = () => {
-        // جعل اللوجو أكبر (150 عرض) ووضعه في الأسفل في المساحة الفارغة
-        ctx.drawImage(logoImg, -60, 5, 520, 520); 
+        const logoWidth = isMobile ? canvas.width * 0.90 : 700;
+        const logoHeight = isMobile ? canvas.width * 0.90 : 700;
+        const logoX = isMobile ? -40 : -70;
+        const logoY = isMobile ? 40 : 10;
         
-        carImg.onload = () => {
-          ctx.globalAlpha = 0.8;
-          // جعل صورة السيارة أصغر (200 عرض بدلاً من الحجم الأصلي)
-          ctx.drawImage(carImg, 30, 350, 400, 120); 
-          ctx.globalAlpha = 1;
-        };
+        ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
       };
     }
 
@@ -127,6 +244,12 @@
       link.href = canvas.toDataURL();
       link.click();
     }
+
+    // إعادة الرسم عند تغيير حجم النافذة
+    window.addEventListener('resize', function() {
+      const order = getLastOrder();
+      if (order) drawOrder(order);
+    });
 
     const order = getLastOrder();
     if (order) {
